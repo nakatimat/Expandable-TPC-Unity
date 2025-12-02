@@ -1,0 +1,146 @@
+# Unity .gitignore
+# Place at root of Unity project
+#
+# See https://github.com/github/gitignore for reference templates
+
+# =============== #
+# Unity Generated #
+# =============== #
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+/MemoryCaptures/
+/UserSettings/LocalSettings.asset
+/Assets/AssetStoreTools*/ 
+/Assets/Plugins/Editor/**/ImportSettings/ # sometimes used for temporary import configs
+
+# Uncomment if using Unity cache server
+# /Library/com.unity.collab/proxy
+
+# ===================================== #
+# OS Generated / IDE / Editor files      #
+# ===================================== #
+# Windows thumbnail cache
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.suo
+*.sln.docstates
+*.user
+*.userprefs
+*.csproj
+*.unityproj
+*.sln
+*.sdf
+*.dbmdl
+*.opendb
+*.VC.db
+*.pidb
+*.pidb.meta
+*.pdb
+*.mdb
+*.opendb
+[Bb]in/
+[Oo]bj/
+*.userosscache
+*.sln.iml
+
+# JetBrains Rider caches for Unity
+.idea/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# MonoDevelop / Xamarin Studio
+*.userprefs
+
+# ====================== #
+# Compiled / Build files #
+# ====================== #
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+*.ipa
+*.obb
+
+# ====================== #
+# Temporary / backup     #
+# ====================== #
+*.tmp
+*.temp
+*.bak
+*.swp
+*.orig
+*.log
+*.log.*
+*.stacktrace
+
+# ====================== #
+# Package Managers       #
+# ====================== #
+node_modules/
+.npm/
+.yarn/
+.pnpm-store/
+.npmrc
+
+# ====================== #
+# Test results / coverage#
+# ====================== #
+TestResults/
+*.coverage
+*.coveragexml
+
+# ====================== #
+# Unity Cloud Build      #
+# ====================== #
+*.mobileprovision
+*.jks
+
+# ====================== #
+# LFS / large files      #
+# ====================== #
+# If using Git-LFS, configure .gitattributes to track large binaries (e.g. *.png, *.jpg, *.fbx, *.tga)
+# Example: *.png filter=lfs diff=lfs merge=lfs -text
+
+# Keep /Assets and /ProjectSettings tracked (you generally want to commit them)
+# Ignore local only ProjectSettings
+ProjectSettings/ProjectSettings.asset.lock
+ProjectSettings/EditorBuildSettings.asset.lock
+ProjectSettings/NetworkManager.asset.lock
+
+# Local Editor settings (safe to ignore)
+ProjectSettings/EditorSettings.asset
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/TimeManager.asset
+ProjectSettings/GraphicsSettings.asset
+# Note: Some ProjectSettings should be committed - adjust if needed for your team
+
+# ====================== #
+# Misc                  #
+# ====================== #
+*.swf
+*.psd.meta
+*.tga.meta
+
+# Ignore crash reports
+crash.dmp
+
+# End of file
