@@ -138,6 +138,15 @@ namespace nakatimat.InputSystem
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4b73a4f-6db6-44d3-9c0f-57203b9f5084"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -287,11 +296,33 @@ namespace nakatimat.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""868c622b-35cc-4024-92a0-a51874a3983e"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7f45beff-5ea3-4fe8-bcc2-39f715588e9a"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d386888e-ede9-46df-b43b-cd2090d9f8e7"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -335,6 +366,7 @@ namespace nakatimat.InputSystem
             m_Main_Attack = m_Main.FindAction("Attack", throwIfNotFound: true);
             m_Main_Jump = m_Main.FindAction("Jump", throwIfNotFound: true);
             m_Main_Sprint = m_Main.FindAction("Sprint", throwIfNotFound: true);
+            m_Main_Crouch = m_Main.FindAction("Crouch", throwIfNotFound: true);
         }
 
         ~@Controls()
@@ -420,6 +452,7 @@ namespace nakatimat.InputSystem
         private readonly InputAction m_Main_Attack;
         private readonly InputAction m_Main_Jump;
         private readonly InputAction m_Main_Sprint;
+        private readonly InputAction m_Main_Crouch;
         /// <summary>
         /// Provides access to input actions defined in input action map "Main".
         /// </summary>
@@ -451,6 +484,10 @@ namespace nakatimat.InputSystem
             /// Provides access to the underlying input action "Main/Sprint".
             /// </summary>
             public InputAction @Sprint => m_Wrapper.m_Main_Sprint;
+            /// <summary>
+            /// Provides access to the underlying input action "Main/Crouch".
+            /// </summary>
+            public InputAction @Crouch => m_Wrapper.m_Main_Crouch;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -492,6 +529,9 @@ namespace nakatimat.InputSystem
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
 
             /// <summary>
@@ -518,6 +558,9 @@ namespace nakatimat.InputSystem
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
+                @Crouch.started -= instance.OnCrouch;
+                @Crouch.performed -= instance.OnCrouch;
+                @Crouch.canceled -= instance.OnCrouch;
             }
 
             /// <summary>
@@ -619,6 +662,13 @@ namespace nakatimat.InputSystem
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSprint(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCrouch(InputAction.CallbackContext context);
         }
     }
 }

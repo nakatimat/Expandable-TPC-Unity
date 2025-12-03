@@ -17,6 +17,7 @@ namespace nakatimat.InputSystem
         public Action onAttackPerformed;
         public Action onSprintPerformed;
         public Action onSprintCanceled;
+        public Action onCrouchToggle;
 
         private void Awake()
         {
@@ -77,6 +78,12 @@ namespace nakatimat.InputSystem
             {
                 onSprintCanceled?.Invoke();
             }
+        }
+
+        public void OnCrouch(InputAction.CallbackContext context)
+        {
+            if(context.performed == false) { return; }
+            onCrouchToggle?.Invoke();
         }
 
     }
