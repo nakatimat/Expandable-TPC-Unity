@@ -36,6 +36,7 @@ namespace nakatimat.InputSystem
         private void OnDisable()
         {
             if(inputActions != null) { inputActions.Disable();  }
+            Input = null;
         }
 
         #region Public API

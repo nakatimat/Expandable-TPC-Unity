@@ -25,6 +25,16 @@ namespace nakatimat.Player
         [SerializeField] private float _groundCheckRadius = 0.1f;
         [SerializeField] private LayerMask _groundLayerMask;
 
+        [Header("Capsule Values")]
+        [SerializeField] private float _capsuleStandingHeight = 1.8f;
+        [SerializeField] private float _capsuleStandingCenter = 1f;
+        [SerializeField] private float _capsuleCrouchingHeight = 1.2f;
+        [SerializeField] private float _capsuleCrouchingCenter = 0.6f;
+
+        [SerializeField] private Transform _standBottom;
+        [SerializeField] private Transform _standTop;
+        [SerializeField] private LayerMask _obstacleMask;
+        [SerializeField] private float _radius = 0.3f;
 
 
         [Header("Runtime Variables")]
@@ -60,7 +70,7 @@ namespace nakatimat.Player
             UpdateSpeedState();
             GroundCheck();
             ApplyGravity();
-            //HandleJumpAndFall();
+            HandleJumpAndFall();
             HandleAnimations();
         }
 
@@ -174,6 +184,27 @@ namespace nakatimat.Player
             }
         }
 
+        private void CapsuleCrouchingSize(bool crouching)
+        {
+            if(crouching == true)
+            {
+                _charController.center = new Vector3(0f, _capsuleCrouchingCenter, 0f);
+                _charController.height = _capsuleCrouchingHeight;
+            }
+            else
+            {
+                _charController.center = new Vector3(0f, _capsuleStandingCenter, 0f);
+                _charController.height = _capsuleStandingHeight;
+            }
+        }
+
+        bool CanStandUp()
+        {
+            bool hasObstacle = Physics.CheckCapsule(_standBottom.position,
+                _standTop.position, _radius, _obstacleMask, QueryTriggerInteraction.Ignore);
+            return hasObstacle == false;
+        }
+
         private void HandleAnimations()
         {
             _playerAnimationHandler?.UpdateGrounded(_isGrounded);
@@ -196,8 +227,11 @@ namespace nakatimat.Player
 
         private void SprintPerformed()
         {
-            _isCrouching = false;
             _isSprint = true;
+
+            if (CanStandUp() == false) { return; }
+            _isCrouching = false;
+            CapsuleCrouchingSize(_isCrouching);
         }
         private void SprintCanceled()
         {
@@ -206,7 +240,9 @@ namespace nakatimat.Player
 
         private void OnCrouchToggle()
         {
+            if(CanStandUp() == false) { return; }
             _isCrouching = !_isCrouching;
+            CapsuleCrouchingSize(_isCrouching);
         }
 
         private void OnDrawGizmosSelected()
@@ -214,6 +250,13 @@ namespace nakatimat.Player
             Gizmos.color = Color.yellow;
             Vector3 spherePos = transform.position + Vector3.up * _groundedOffset;
             Gizmos.DrawWireSphere(spherePos, _groundCheckRadius);
+
+            Gizmos.color = Color.cyan;
+            Vector3 p1 = _standBottom.position;
+            Vector3 p2 = _standTop.position;
+
+            Gizmos.DrawWireSphere(p1, _radius);
+            Gizmos.DrawWireSphere(p2, _radius);
         }
 
         private void CursorBehaviour()
