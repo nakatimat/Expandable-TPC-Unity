@@ -1,4 +1,4 @@
-<h1 align="center"> Third Person Controller – Unity 6.2+ </h1>
+<h1 align="center"> Third Person Controller – Unity 6.3 </h1>
 
 A third-person character controller using **Input System**, **Cinemachine**, and **Animator with Sub-State Machines**. Simple, organized, and ready to serve as a base for any 3D game.
 
@@ -17,7 +17,7 @@ A third-person character controller using **Input System**, **Cinemachine**, and
 
 ## ▶️ How to Use
 1. Download the ```.unitypackage``` from the Release Page  
-2. Open it with **Unity 6.2+**  
+2. Open it with **Unity 6.3 LTS**  
 3. Install Cinemachine ```Package Manager > Unity Registry > Cinemachine```
 4. Open and run the demo scene
 
