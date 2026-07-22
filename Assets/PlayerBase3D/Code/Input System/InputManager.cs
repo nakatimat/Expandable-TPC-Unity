@@ -1,92 +1,54 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
 
-namespace nakatimat.InputSystem 
+namespace nakatimat.InputSystem
 {
     public class InputManager : MonoBehaviour, Controls.IMainActions
     {
-        public static InputManager Input;
+        public event Action JumpPerformed;
+        public event Action AttackPerformed;
+        public event Action SprintPerformed;
+        public event Action SprintCanceled;
+        public event Action CrouchToggled;
 
-        private Controls inputActions;
+        public Vector2 MoveInput { get; private set; }
 
-        private Vector2 _moveComposite;
+        private Controls _controls;
 
-        [Header("Action Events")]
-        public Action onJumpPerformed;
-        public Action onAttackPerformed;
-        public Action onSprintPerformed;
-        public Action onSprintCanceled;
-        public Action onCrouchToggle;
+        private void Awake() => _controls = new Controls();
 
-        private void Awake()
+        private void OnEnable()
         {
-            if(Input != null && Input != this)
-            {
-                Destroy(this.gameObject);
-                return;
-            }
-            Input = this;
-
-            inputActions = new Controls();
-            inputActions.Main.SetCallbacks(this);
-            inputActions.Enable();
+            _controls.Main.SetCallbacks(this);
+            _controls.Enable();
         }
 
-        private void OnDisable()
-        {
-            if(inputActions != null) { inputActions.Disable();  }
-            Input = null;
-        }
+        private void OnDisable() => _controls.Disable();
 
-        #region Public API
-        public Vector2 GetAxis()
-        {
-            return _moveComposite;
-        }
-        #endregion
+        public void OnMovement(InputAction.CallbackContext context) => MoveInput = context.ReadValue<Vector2>();
 
-        public void OnAttack(InputAction.CallbackContext context)
-        {
-            if (context.performed == false) { return; }
-            onAttackPerformed?.Invoke();
-        }
+        public void OnLook(InputAction.CallbackContext context) { }
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            if(context.performed == false) { return; }
-            onJumpPerformed?.Invoke();
+            if (context.performed) { JumpPerformed?.Invoke(); }
         }
 
-        public void OnLook(InputAction.CallbackContext context)
+        public void OnAttack(InputAction.CallbackContext context)
         {
-            
-        }
-
-        public void OnMovement(InputAction.CallbackContext context)
-        {
-            _moveComposite = context.ReadValue<Vector2>();
+            if (context.performed) { AttackPerformed?.Invoke(); }
         }
 
         public void OnSprint(InputAction.CallbackContext context)
         {
-            if (context.performed == false) 
-            { 
-                onSprintPerformed?.Invoke();
-            }
-            
-            if (context.canceled == true)
-            {
-                onSprintCanceled?.Invoke();
-            }
+            if (context.started) { SprintPerformed?.Invoke(); }
+            if (context.canceled) { SprintCanceled?.Invoke(); }
         }
 
         public void OnCrouch(InputAction.CallbackContext context)
         {
-            if(context.performed == false) { return; }
-            onCrouchToggle?.Invoke();
+            if (context.performed) { CrouchToggled?.Invoke(); }
         }
-
     }
 }
-

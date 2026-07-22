@@ -754,6 +754,8 @@ GameObject:
   - component: {fileID: 4340804565598343589}
   - component: {fileID: 6505631637665431939}
   - component: {fileID: 4894808833033606226}
+  - component: {fileID: 6087514624032043372}
+  - component: {fileID: 2149859788353931044}
   m_Layer: 3
   m_Name: PlayerBase
   m_TagString: Untagged
@@ -839,12 +841,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db6b06f8952f814c8c25135907472ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  _inputManager: {fileID: 2149859788353931044}
   _playerAnimationHandler: {fileID: 4894808833033606226}
   _walkSpeed: 3
   _crouchSpeed: 2
   _sprintSpeed: 6
   _rotationSmoothing: 10
   _speedChangeDamping: 10
+  _stopDamping: 25
   _jumpForce: 10
   _gravityMultiplayer: 2
   _groundedOffset: -0.1
@@ -878,7 +882,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17ed330ea5f38de44b2dbe3ec52dae94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationHandler
+  _brain: {fileID: 6087514624032043372}
+  _idleState: Idle
+  _walkState: Walk
+  _runState: Run
+  _crouchState: Crouch
+  _crouchWalkState: CrouchWalk
+  _jumpState: Jump
+  _fallState: Fall
+  _landState: Land
+  _walkSpeedThreshold: 0.1
+  _runSpeedThreshold: 4.5
+  _transitionDuration: 0.15
+  _stopTransitionDuration: 0.08
+  _landDuration: 0.2
+--- !u!114 &6087514624032043372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663725722972403605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fca3adc9a891ae458ff3241383be759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::nakatimat.Animation.AnimationBrain
   _animator: {fileID: 4759285526019858611}
+  _defaultTransitionDuration: 0.15
+--- !u!114 &2149859788353931044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663725722972403605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cbc055bcd335243b92108a5c2bf809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::nakatimat.InputSystem.InputManager
 --- !u!1 &3774395661547666879
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,6 +1042,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3968331473141996619
 GameObject:
@@ -1247,6 +1291,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4887779659729909999
 GameObject:
@@ -1455,6 +1500,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0

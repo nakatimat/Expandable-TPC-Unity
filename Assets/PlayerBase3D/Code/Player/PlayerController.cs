@@ -6,7 +6,7 @@ namespace nakatimat.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Ref")]
-        private InputManager input;
+        [SerializeField] private InputManager _inputManager;
         private CharacterController _charController;
         [SerializeField] private PlayerAnimationHandler _playerAnimationHandler;
         private Transform _camera;
@@ -17,6 +17,8 @@ namespace nakatimat.Player
         [SerializeField] private float _sprintSpeed = 6f;
         [SerializeField] private float _rotationSmoothing = 10f;
         [SerializeField] private float _speedChangeDamping = 10f;
+        [Tooltip("Damping usado so ao soltar o input (desacelerar ate parar). Mais alto = para mais rapido, sem o \"arrasto\" na animacao.")]
+        [SerializeField] private float _stopDamping = 25f;
 
         [Header("Jump & Gravity")]
         [SerializeField] private float _jumpForce = 7f;
@@ -49,13 +51,13 @@ namespace nakatimat.Player
         void Start()
         {
             CursorBehaviour();
-            input = InputManager.Input;
+
+            if (_inputManager == null) { _inputManager = GetComponent<InputManager>(); }
+            if (_playerAnimationHandler == null) { _playerAnimationHandler = GetComponent<PlayerAnimationHandler>(); }
             SubscribeInput(true);
 
             _charController = GetComponent<CharacterController>();
             _camera = Camera.main.transform;
-
-            if(_playerAnimationHandler == null) { _playerAnimationHandler = GetComponent<PlayerAnimationHandler>(); }
         }
 
         private void OnDisable()
@@ -76,29 +78,28 @@ namespace nakatimat.Player
 
         private void SubscribeInput(bool subscribe)
         {
-            if (input == null) { return; }
+            if (_inputManager == null) { return; }
             if (subscribe == true)
             {
-                input.onJumpPerformed += Jump;
-                input.onAttackPerformed += Attack;
-                input.onSprintPerformed += SprintPerformed;
-                input.onSprintCanceled += SprintCanceled;
-                input.onCrouchToggle += OnCrouchToggle;
+                _inputManager.JumpPerformed += Jump;
+                _inputManager.AttackPerformed += Attack;
+                _inputManager.SprintPerformed += SprintPerformed;
+                _inputManager.SprintCanceled += SprintCanceled;
+                _inputManager.CrouchToggled += OnCrouchToggle;
             }
             else
             {
-                input.onJumpPerformed -= Jump;
-                input.onAttackPerformed -= Attack;
-                input.onSprintPerformed -= SprintPerformed;
-                input.onSprintCanceled -= SprintCanceled;
-                input.onCrouchToggle -= OnCrouchToggle;
+                _inputManager.JumpPerformed -= Jump;
+                _inputManager.AttackPerformed -= Attack;
+                _inputManager.SprintPerformed -= SprintPerformed;
+                _inputManager.SprintCanceled -= SprintCanceled;
+                _inputManager.CrouchToggled -= OnCrouchToggle;
             }
-
         }
 
         void HandleInput()
         {
-            _moveDirection = GetCameraRelativeDirection(input.GetAxis());
+            _moveDirection = GetCameraRelativeDirection(_inputManager.MoveInput);
         }
 
         private Vector3 GetCameraRelativeDirection(Vector2 axis)
@@ -138,23 +139,18 @@ namespace nakatimat.Player
         private void UpdateSpeedState()
         {
             float inputMagnitude = new Vector2(_moveDirection.x, _moveDirection.z).magnitude;
+            bool hasInput = inputMagnitude > 0.01f;
 
-            if(_isCrouching == true && inputMagnitude > 0.01f)
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, _crouchSpeed, _speedChangeDamping * Time.deltaTime);
-            }
-            if (_isSprint == true && inputMagnitude > 0.01f)
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, _sprintSpeed, _speedChangeDamping * Time.deltaTime);
-            }
-            else if (inputMagnitude > 0.01f)
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, _walkSpeed, _speedChangeDamping * Time.deltaTime);
-            }
-            else
-            {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, 0, _speedChangeDamping * Time.deltaTime);
-            }
+            float targetSpeed;
+            if (hasInput == false) { targetSpeed = 0f; }
+            else if (_isCrouching == true) { targetSpeed = _crouchSpeed; }
+            else if (_isSprint == true) { targetSpeed = _sprintSpeed; }
+            else { targetSpeed = _walkSpeed; }
+
+            // Soltar o input usa um damping proprio (mais rapido) pra nao deixar
+            // a animacao "arrastando" depois que o personagem para de se mover.
+            float damping = hasInput ? _speedChangeDamping : _stopDamping;
+            _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, damping * Time.deltaTime);
         }
 
         private void GroundCheck()
@@ -174,7 +170,7 @@ namespace nakatimat.Player
 
         private void HandleJumpAndFall()
         {
-            if(_isGrounded == false) 
+            if(_isGrounded == false)
             {
                 _isJumping = _verticalVelocity > 0.1f;
             }
