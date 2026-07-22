@@ -752,10 +752,10 @@ GameObject:
   - component: {fileID: 7187886913989037278}
   - component: {fileID: 4759285526019858611}
   - component: {fileID: 4340804565598343589}
-  - component: {fileID: 6505631637665431939}
-  - component: {fileID: 4894808833033606226}
-  - component: {fileID: 6087514624032043372}
   - component: {fileID: 2149859788353931044}
+  - component: {fileID: 6505631637665431939}
+  - component: {fileID: 6087514624032043372}
+  - component: {fileID: 4894808833033606226}
   m_Layer: 3
   m_Name: PlayerBase
   m_TagString: Untagged
@@ -829,6 +829,18 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.93, z: 0}
+--- !u!114 &2149859788353931044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663725722972403605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cbc055bcd335243b92108a5c2bf809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::nakatimat.InputSystem.InputManager
 --- !u!114 &6505631637665431939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,6 +882,20 @@ MonoBehaviour:
   _isGrounded: 0
   _isCrouching: 0
   _isJumping: 0
+--- !u!114 &6087514624032043372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663725722972403605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fca3adc9a891ae458ff3241383be759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::nakatimat.Animation.AnimationBrain
+  _animator: {fileID: 4759285526019858611}
+  _defaultTransitionDuration: 0.15
 --- !u!114 &4894808833033606226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,32 +922,6 @@ MonoBehaviour:
   _transitionDuration: 0.15
   _stopTransitionDuration: 0.08
   _landDuration: 0.2
---- !u!114 &6087514624032043372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3663725722972403605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fca3adc9a891ae458ff3241383be759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::nakatimat.Animation.AnimationBrain
-  _animator: {fileID: 4759285526019858611}
-  _defaultTransitionDuration: 0.15
---- !u!114 &2149859788353931044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3663725722972403605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3cbc055bcd335243b92108a5c2bf809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::nakatimat.InputSystem.InputManager
 --- !u!1 &3774395661547666879
 GameObject:
   m_ObjectHideFlags: 0
