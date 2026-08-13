@@ -13,6 +13,8 @@ namespace nakatimat.InputSystem
         public event Action CrouchToggled;
 
         public Vector2 MoveInput { get; private set; }
+        public Vector2 LookInput { get; private set; }
+        public bool IsGamepad { get; private set; }
 
         private Controls _controls;
 
@@ -28,7 +30,15 @@ namespace nakatimat.InputSystem
 
         public void OnMovement(InputAction.CallbackContext context) => MoveInput = context.ReadValue<Vector2>();
 
-        public void OnLook(InputAction.CallbackContext context) { }
+        public void OnLook(InputAction.CallbackContext context)
+        {
+            LookInput = context.ReadValue<Vector2>();
+
+            if (context.control != null && context.control.device != null)
+            {
+                IsGamepad = context.control.device is Gamepad;
+            }
+        }
 
         public void OnJump(InputAction.CallbackContext context)
         {

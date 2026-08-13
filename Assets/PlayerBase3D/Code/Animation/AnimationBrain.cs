@@ -3,15 +3,10 @@ using UnityEngine;
 
 namespace nakatimat.Animation
 {
-    // Camada generica sobre o Animator, pensada pra ser reaproveitada em
-    // Player, NPCs e inimigos. Troca estados via Animator.CrossFade (por nome/hash)
-    // em vez de depender de parametros + transicoes/blend trees no proprio
-    // Animator Controller — o controller vira so uma lista de estados soltos,
-    // e quem decide a logica de troca e o codigo (ex: PlayerAnimationHandler).
-    //
-    // Tambem sabe lidar com Layers do Animator (ex: uma layer de upper-body
-    // com AvatarMask pra mirar com arco e flecha por cima da locomocao),
-    // usando GetLayerIndex/SetLayerWeight/CrossFade com o parametro de layer.
+    // Generic layer over the Animator, reusable across Player, NPCs and enemies.
+    // Switches states via Animator.CrossFade instead of Animator Controller
+    // parameters/transitions, so the controller stays a flat list of states and
+    // the switching logic lives in code (e.g. PlayerAnimationHandler).
     public class AnimationBrain : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
@@ -48,10 +43,8 @@ namespace nakatimat.Animation
             _animator.SetLayerWeight(layerIndex, weight);
         }
 
-        // Troca de estado por CrossFade. Nao reinicia a animacao se o estado
-        // pedido ja for o atual (ou o alvo de uma transicao em andamento) —
-        // sem essa guarda, chamar isso todo frame reiniciaria a animacao a
-        // cada frame.
+        // Guards against restarting the animation if it's already the current
+        // (or in-transition) target state, since this gets called every frame.
         public void CrossFade(string stateName, float transitionDuration = -1f, int layer = 0)
         {
             if (_animator == null || string.IsNullOrEmpty(stateName)) { return; }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using nakatimat.InputSystem;
 
@@ -5,6 +6,8 @@ namespace nakatimat.Player
 {
     public class PlayerController : MonoBehaviour
     {
+        public event Action<bool> CrouchStateChanged;
+
         [Header("Ref")]
         [SerializeField] private InputManager _inputManager;
         private CharacterController _charController;
@@ -17,11 +20,15 @@ namespace nakatimat.Player
         [SerializeField] private float _sprintSpeed = 6f;
         [SerializeField] private float _rotationSmoothing = 10f;
         [SerializeField] private float _speedChangeDamping = 10f;
-        [Tooltip("Damping usado so ao soltar o input (desacelerar ate parar). Mais alto = para mais rapido, sem o \"arrasto\" na animacao.")]
+        [Tooltip("Damping used only when releasing input (decelerating to a stop). Higher = stops faster, without the animation \"dragging\".")]
         [SerializeField] private float _stopDamping = 25f;
 
         [Header("Jump & Gravity")]
         [SerializeField] private float _jumpForce = 7f;
+        [Tooltip("Multiplies the jump's vertical force while sprinting, for a boost-like feel.")]
+        [SerializeField] private float _sprintJumpForceMultiplier = 1.3f;
+        [Tooltip("Extra push in the movement direction when jumping while sprinting.")]
+        [SerializeField] private float _sprintJumpForwardBoost = 2f;
         [SerializeField] private float _gravityMultiplayer = 2f;
         [SerializeField] private float _groundedOffset = -0.1f;
         [SerializeField] private float _groundCheckRadius = 0.1f;
@@ -147,8 +154,6 @@ namespace nakatimat.Player
             else if (_isSprint == true) { targetSpeed = _sprintSpeed; }
             else { targetSpeed = _walkSpeed; }
 
-            // Soltar o input usa um damping proprio (mais rapido) pra nao deixar
-            // a animacao "arrastando" depois que o personagem para de se mover.
             float damping = hasInput ? _speedChangeDamping : _stopDamping;
             _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, damping * Time.deltaTime);
         }
@@ -215,7 +220,14 @@ namespace nakatimat.Player
 
         private void Jump()
         {
-            if (_isGrounded == true)
+            if (_isGrounded == false) { return; }
+
+            if (_isSprint == true)
+            {
+                _verticalVelocity = _jumpForce * _sprintJumpForceMultiplier;
+                _currentSpeed += _sprintJumpForwardBoost;
+            }
+            else
             {
                 _verticalVelocity = _jumpForce;
             }
@@ -228,6 +240,7 @@ namespace nakatimat.Player
             if (CanStandUp() == false) { return; }
             _isCrouching = false;
             CapsuleCrouchingSize(_isCrouching);
+            CrouchStateChanged?.Invoke(_isCrouching);
         }
         private void SprintCanceled()
         {
@@ -239,6 +252,7 @@ namespace nakatimat.Player
             if(CanStandUp() == false) { return; }
             _isCrouching = !_isCrouching;
             CapsuleCrouchingSize(_isCrouching);
+            CrouchStateChanged?.Invoke(_isCrouching);
         }
 
         private void OnDrawGizmosSelected()

@@ -7,7 +7,7 @@ namespace nakatimat.Player
     {
         [SerializeField] private AnimationBrain _brain;
 
-        [Header("Nomes dos Estados (Animator Controller)")]
+        [Header("State Names (Animator Controller)")]
         [SerializeField] private string _idleState = "Idle";
         [SerializeField] private string _walkState = "Walk";
         [SerializeField] private string _runState = "Run";
@@ -17,14 +17,14 @@ namespace nakatimat.Player
         [SerializeField] private string _fallState = "Fall";
         [SerializeField] private string _landState = "Land";
 
-        [Header("Configuracao")]
+        [Header("Configuration")]
         [SerializeField] private float _walkSpeedThreshold = 0.1f;
-        [Tooltip("Acima desse valor de speed entra em Run em vez de Walk. Ajuste conforme _walkSpeed/_sprintSpeed do PlayerController.")]
+        [Tooltip("Above this speed it enters Run instead of Walk. Tune alongside PlayerController's _walkSpeed/_sprintSpeed.")]
         [SerializeField] private float _runSpeedThreshold = 4.5f;
         [SerializeField] private float _transitionDuration = 0.15f;
-        [Tooltip("Blend usado especificamente ao entrar em Idle/Crouch parado — mais curto pra parar sem 'arrastar'.")]
+        [Tooltip("Blend used specifically when settling into Idle/Crouch — shorter, so stopping doesn't \"drag\".")]
         [SerializeField] private float _stopTransitionDuration = 0.08f;
-        [Tooltip("Quanto tempo o estado de pouso fica tocando antes de voltar pra locomocao.")]
+        [Tooltip("How long the landing state plays before returning to locomotion.")]
         [SerializeField] private float _landDuration = 0.2f;
 
         private bool _isGrounded = true;
