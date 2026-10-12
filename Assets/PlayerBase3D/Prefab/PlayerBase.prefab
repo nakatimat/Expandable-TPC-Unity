@@ -765,7 +765,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3449372624602266493}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -828,7 +828,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: f48496eed1a0df0418888c8d637dbad5, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -895,9 +895,11 @@ MonoBehaviour:
   _speedChangeDamping: 10
   _stopDamping: 25
   _jumpForce: 10
+  _sprintJumpForceMultiplier: 1.3
+  _sprintJumpForwardBoost: 2
   _gravityMultiplayer: 2
   _groundedOffset: -0.1
-  _groundCheckRadius: 0.15
+  _groundCheckRadius: 0.3
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -968,8 +970,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::nakatimat.Player.PlayerCameraLook
   _inputManager: {fileID: 2149859788353931044}
+  _playerController: {fileID: 6505631637665431939}
   _cameraTarget: {fileID: 1973681217879385965}
   _vcam: {fileID: 2069370828007616688}
+  _standingHeight: 1.5
+  _crouchingHeight: 0.9
+  _heightLerpSpeed: 8
   _mouseSensitivity: {x: 2, y: 2}
   _gamepadSensitivity: {x: 150, y: 150}
   _bottomClamp: -60
@@ -977,8 +983,6 @@ MonoBehaviour:
   _enableSmoothing: 1
   _smoothTime: 0.05
   _maxDegreesPerFrame: 25
-  _sprintFovKick: 6
-  _fovLerpSpeed: 6
 --- !u!1 &3774395661547666879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2617,16 +2621,16 @@ MonoBehaviour:
   AvoidObstacles:
     Enabled: 1
     DistanceLimit: 0
-    MinimumOcclusionTime: 0
+    MinimumOcclusionTime: 0.05
     CameraRadius: 0.4
     UseFollowTarget:
       Enabled: 0
       YOffset: 0
     Strategy: 0
     MaximumEffort: 4
-    SmoothingTime: 0
-    Damping: 0.4
-    DampingWhenOccluded: 0.2
+    SmoothingTime: 0.2
+    Damping: 0.5
+    DampingWhenOccluded: 0.7
   ShotQualityEvaluation:
     Enabled: 0
     OptimalDistance: 10
